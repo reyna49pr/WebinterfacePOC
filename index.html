@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeAI POC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #0078D7;
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+        button {
+            font-size: 18px;
+            margin: 10px;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .on {
+            background-color: #28a745;
+            color: white;
+        }
+        .off {
+            background-color: #dc3545;
+            color: white;
+        }
+        .color {
+            background-color: #ffc107;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>HomeAI POC</h1>
+        <p>Control your smart devices</p>
+    </header>
+    <main>
+        <div>
+            <h2>Philips Hue</h2>
+            <button class="on" onclick="sendCommand('light', 'turn_on')">Turn On</button>
+            <button class="off" onclick="sendCommand('light', 'turn_off')">Turn Off</button>
+            <button class="color" onclick="sendCommand('light', 'change_color')">Change Color</button>
+        </div>
+        <div>
+            <h2>Google Home</h2>
+            <button class="on" onclick="sendCommand('google_home', 'turn_on')">Turn On</button>
+            <button class="off" onclick="sendCommand('google_home', 'turn_off')">Turn Off</button>
+        </div>
+        <div>
+            <h2>Amazon Echo</h2>
+            <button class="on" onclick="sendCommand('amazon_echo', 'turn_on')">Turn On</button>
+            <button class="off" onclick="sendCommand('amazon_echo', 'turn_off')">Turn Off</button>
+        </div>
+    </main>
+    <script>
+        async function sendCommand(device, action) {
+            const response = await fetch('/control', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ device, action }),
+            });
+            const result = await response.json();
+            alert(result.message || result.error);
+        }
+    </script>
+</body>
+</html>
